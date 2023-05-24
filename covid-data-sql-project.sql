@@ -116,3 +116,14 @@ GROUP BY
 location, population, date
 ORDER BY
 percent_population_infected DESC
+
+-- Current total deaths and cases in the world 
+SELECT
+location, MAX(CAST(new_cases AS INT)) AS total_cases, MAX(cast(total_deaths AS INT)) AS total_deceased, 
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+location = 'World'
+GROUP BY
+location
+
