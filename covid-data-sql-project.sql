@@ -81,3 +81,28 @@ GROUP BY
 location, population
 ORDER BY
  percent_pop_infected DESC
+ 
+-- Joining two tables on location and date
+SELECT 
+deaths.continent, deaths.location, deaths.date, deaths.population, vaccs.new_vaccinations
+FROM 
+`covid-data-387015.covid_data_exploration.covid_world_deaths` deaths
+JOIN 
+`covid-data-387015.covid_data_exploration.covid_world_vaccinations` vaccs
+  ON deaths.location = vaccs.location
+  AND deaths.date = vaccs.date
+WHERE deaths.continent IS NOT NULL
+ORDER BY 
+1, 2, 3
+
+-- Look at total population vs vaccinations
+SELECT 
+dea.continent, dea.location, dea.date, dea.population, vacs.new_vaccinations, SUM(CAST(vacs.new_vaccinations AS INT)) OVER (PARTITION BY dea.location ORDER BY dea.location, dea.date) AS people_vaccinated_count, (new_vaccinations/dea.population)*100 AS percent_of_people_vaccinated
+FROM 
+`covid-data-387015.covid_data_exploration.covid_world_deaths` dea
+JOIN 
+`covid-data-387015.covid_data_exploration.covid_world_vaccinations` vacs
+  ON dea.location = vacs.location
+  AND dea.date = vacs.date
+WHERE dea.continent IS NOT NULL
+ORDER BY 2, 3
