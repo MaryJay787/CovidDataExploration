@@ -106,3 +106,13 @@ JOIN
   AND dea.date = vacs.date
 WHERE dea.continent IS NOT NULL
 ORDER BY 2, 3
+
+-- Percent of population infected vs. total number of cases 
+SELECT
+location, CAST(population AS INT) AS population, date, MAX(CAST(total_cases AS INT)) AS highest_infection_count, MAX(total_cases/population)*100 AS percent_population_infected
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+GROUP BY
+location, population, date
+ORDER BY
+percent_population_infected DESC
