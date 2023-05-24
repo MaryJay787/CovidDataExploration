@@ -127,3 +127,15 @@ location = 'World'
 GROUP BY
 location
 
+-- Queried death count by location
+SELECT
+location, SUM(CAST(new_deaths AS INT)) AS total_death_count
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+continent IS NULL
+AND location NOT IN ('World', 'European Union', 'International', 'Low income', 'Lower middle income', 'Upper middle income', 'High income')
+GROUP BY
+location
+ORDER BY 
+total_death_count
