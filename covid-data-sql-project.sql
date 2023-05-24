@@ -18,7 +18,7 @@ ORDER BY
 
 -- Global day-to-day reported numbers.
 SELECT
-date, SUM(cast(new_cases AS INT)) AS total_cases, location
+date, SUM(CAST(new_cases AS INT)) AS total_cases, location
 FROM 
 `covid-data-387015.covid_data_exploration.covid_world_deaths`
 WHERE 
@@ -32,8 +32,8 @@ ORDER BY
 
 -- Global daily deaths and new cases 
 SELECT
-date, SUM(cast(new_cases AS INT)) AS total_cases, SUM(cast(new_deaths AS INT)) AS total_deaths,
-SUM(cast(new_deaths as INT)) / SUM(cast(new_cases AS INT))*100 AS death_percent
+date, SUM(CAST(new_cases AS INT)) AS total_cases, SUM(CAST(new_deaths AS INT)) AS total_deaths,
+SUM(CAST(new_deaths as INT)) / SUM(CAST(new_cases AS INT))*100 AS death_percent
 FROM 
 `covid-data-387015.covid_data_exploration.covid_world_deaths`
 WHERE 
@@ -47,7 +47,7 @@ ORDER BY
 
 -- Maximum number of deceased grouped by continent and population.
 SELECT
-location, cast(population AS INT) AS pop, MAX(cast(total_deaths AS INT)) AS total_deceased, 
+location, CAST(population AS INT) AS pop, MAX(CAST(total_deaths AS INT)) AS total_deceased, 
 FROM
 `covid-data-387015.covid_data_exploration.covid_world_deaths`
 WHERE 
@@ -60,7 +60,7 @@ total_deceased DESC
 -- Highest deceased records by continent.
 -- Alternate is not and is null too view more accurate results.
 SELECT
-location, MAX(cast(total_deaths AS INT)) AS total_deceased, 
+location, MAX(CAST(total_deaths AS INT)) AS total_deceased, 
 FROM
 `covid-data-387015.covid_data_exploration.covid_world_deaths`
 WHERE 
@@ -69,3 +69,15 @@ GROUP BY
 location
 ORDER BY
 total_deceased DESC
+
+-- Queried highest rates of infection while isolating null locations. 
+SELECT
+location, CAST(population AS INT) AS population, MAX(CAST(total_cases AS INT)) AS highest_infection_count, MAX((total_cases/population))*100 AS percent_pop_infected
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+location NOT IN ('World', 'High income', 'Low income', 'Lower middle income', 'Upper middle income', 'Macao', 'Northern Cyprus', 'Taiwan', 'North Korea', 'Hong Kong', 'Turkmenistan', 'Western Sahara', 'England', 'Northern Ireland', 'Scotland', 'Wales')
+GROUP BY
+location, population
+ORDER BY
+ percent_pop_infected DESC
