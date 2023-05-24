@@ -56,3 +56,16 @@ GROUP BY
 location, population
 ORDER BY
 total_deceased DESC
+
+-- Highest deceased records by continent.
+-- Alternate is not and is null too view more accurate results.
+SELECT
+location, MAX(cast(total_deaths AS INT)) AS total_deceased, 
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+continent IS NULL
+GROUP BY
+location
+ORDER BY
+total_deceased DESC
