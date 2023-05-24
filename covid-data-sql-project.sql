@@ -139,3 +139,16 @@ GROUP BY
 location
 ORDER BY 
 total_death_count
+
+-- Looking at total cases and deaths according to income brackets
+SELECT 
+location, population, SUM(CAST(total_cases AS INT)) AS total_cases, SUM(CAST(total_deaths AS INT)) AS total_deaths
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE
+continent IS NULL
+AND location NOT IN ('Asia', 'World', 'Africa', 'Europe', 'North America', 'European Union', 'South America', 'Oceania')
+GROUP BY
+location, population
+ORDER BY 
+4 DESC
