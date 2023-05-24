@@ -29,3 +29,18 @@ GROUP BY
 date, location
 ORDER BY
 1,2
+
+-- Global daily deaths and new cases 
+SELECT
+date, SUM(cast(new_cases AS INT)) AS total_cases, SUM(cast(new_deaths AS INT)) AS total_deaths,
+SUM(cast(new_deaths as INT)) / SUM(cast(new_cases AS INT))*100 AS death_percent
+FROM 
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+continent IS NOT NULL
+AND new_cases <> 0
+AND new_deaths <> 0
+GROUP BY
+date
+ORDER BY
+1,2
