@@ -44,3 +44,15 @@ GROUP BY
 date
 ORDER BY
 1,2
+
+-- Maximum number of deceased grouped by continent and population.
+SELECT
+location, cast(population AS INT) AS pop, MAX(cast(total_deaths AS INT)) AS total_deceased, 
+FROM
+`covid-data-387015.covid_data_exploration.covid_world_deaths`
+WHERE 
+continent IS NOT NULL
+GROUP BY
+location, population
+ORDER BY
+total_deceased DESC
